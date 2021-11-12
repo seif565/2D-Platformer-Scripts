@@ -11,6 +11,7 @@ public class PlayerMovement :  MonoBehaviour
     [SerializeField] float jumpForce = 10f;
     [SerializeField] float attackCD = 2f;    
     [SerializeField] float dodgeForce = 500f;
+    [SerializeField] float pushForce = 23;
 
     [Header("Timers")]
     [SerializeField] float dodgeCD = 0.3f;
@@ -122,8 +123,8 @@ public class PlayerMovement :  MonoBehaviour
         Debug.Log("Player Hit Something");
         if (collision.gameObject.layer == 7)
         {
-            Destroy(gameObject);
-            Debug.Log("momo");
+            playerRB.AddForce(new Vector2(- transform.localScale.x * pushForce, 0));
+            FindObjectOfType<LevelHandler>().HandleHit();
         }
     }
 }

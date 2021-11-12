@@ -52,13 +52,7 @@ public class Enemy : MonoBehaviour
         }
         return isVisible;
     }**/
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.layer == 3)
-        {
-            Debug.Log("targer hit.");
-        }
-    }
+    
     private void OnTriggerExit2D(Collider2D collision)
     {
         StartCoroutine(WaitAndTurn());
