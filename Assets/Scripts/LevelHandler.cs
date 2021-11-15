@@ -3,21 +3,21 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class LevelHandler : MonoBehaviour
-{
-    [SerializeField] TextMeshProUGUI gameOverText;
+{    
     [SerializeField] int playerLives = 3;
     [SerializeField] int score = 0;
-    [SerializeField] TextMeshProUGUI livesText;
-    [SerializeField] TextMeshProUGUI scoreText;
+    UIHandler levelUI;
 
     int currentLives = 0;
 
+    // Singleton Patterm
     private void Awake()
     {
         if (FindObjectsOfType<LevelHandler>().Length > 1)
         {
             Destroy(gameObject);
         }
+
         else
         {
             DontDestroyOnLoad(gameObject);
@@ -26,34 +26,40 @@ public class LevelHandler : MonoBehaviour
 
     void Start()
     {
-        gameOverText.gameObject.SetActive(false);
-        currentLives = playerLives;
-        livesText.SetText(playerLives.ToString());
-        scoreText.SetText(score.ToString());
+        levelUI = FindObjectOfType<UIHandler>();
+        currentLives = playerLives;        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // Decreases lives and checks if no  lives are left
     public void HandleHit()
     {
+        Debug.Log("Hit Handled");
         currentLives--;
-        livesText.SetText(playerLives.ToString());
+        levelUI.UpdateLives();
         if (currentLives <= 0) { HandleDeath(); }
     }
 
+    // Ends game if no lives remain.
     private void HandleDeath()
-    {
-        gameOverText.gameObject.SetActive(true);
+    {        
         Destroy(FindObjectOfType<PlayerMovement>().gameObject);
-        Debug.Log("Game Over");
+        levelUI.ShowGameOverUI();
     }
+
+    // Adds points on collecting coins
     public void AddScore(int addedScore)
     {
         score += addedScore;
-        scoreText.SetText(score.ToString());
+        levelUI.UpdateScore();
+    }
+
+    public int GetCurrentLives()
+    {
+        return currentLives;
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 }
