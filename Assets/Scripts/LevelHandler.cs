@@ -1,14 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI; 
+using TMPro;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class LevelHandler : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI gameOverText;
     [SerializeField] int playerLives = 3;
-    [SerializeField] Canvas gameOverCanvas;
     [SerializeField] int score = 0;
+    [SerializeField] TextMeshProUGUI livesText;
+    [SerializeField] TextMeshProUGUI scoreText;
 
     int currentLives = 0;
 
@@ -26,8 +26,10 @@ public class LevelHandler : MonoBehaviour
 
     void Start()
     {
-        gameOverCanvas.gameObject.SetActive(false);
+        gameOverText.gameObject.SetActive(false);
         currentLives = playerLives;
+        livesText.SetText(playerLives.ToString());
+        scoreText.SetText(score.ToString());
     }
 
     // Update is called once per frame
@@ -39,18 +41,19 @@ public class LevelHandler : MonoBehaviour
     public void HandleHit()
     {
         currentLives--;
-        Debug.Log(currentLives);
+        livesText.SetText(playerLives.ToString());
         if (currentLives <= 0) { HandleDeath(); }
     }
 
     private void HandleDeath()
     {
-        gameOverCanvas.gameObject.SetActive(true);
+        gameOverText.gameObject.SetActive(true);
         Destroy(FindObjectOfType<PlayerMovement>().gameObject);
         Debug.Log("Game Over");
     }
     public void AddScore(int addedScore)
     {
         score += addedScore;
+        scoreText.SetText(score.ToString());
     }
 }
