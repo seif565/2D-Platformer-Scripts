@@ -10,15 +10,17 @@ public class Enemy : MonoBehaviour
     [SerializeField] Transform castPoint;    
     float currentMoveSpeed;
     float movementDirection;
-    
-
+        
     // Cahced References
     [SerializeField] BoxCollider2D bodyCollider, terrainCollider;
     Rigidbody2D enemyRB;
+    Animator enemyAnimator;
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {                
+        enemyAnimator = GetComponent<Animator>();
+        enemyAnimator.SetBool("isWalking", true);
         currentMoveSpeed = enemyMoveSpeed;
         enemyRB = GetComponent<Rigidbody2D>();
         movementDirection = transform.localScale.x;
@@ -57,10 +59,14 @@ public class Enemy : MonoBehaviour
     {
         StartCoroutine(WaitAndTurn());
     }
+
+    // Walk and wait cycle when touching 
     private IEnumerator WaitAndTurn()
     {
         currentMoveSpeed = 0;
+        enemyAnimator.SetBool("isWalking", false);
         yield return new WaitForSeconds(waitTime);
+        enemyAnimator.SetBool("isWalking", true);
         currentMoveSpeed = enemyMoveSpeed;
         transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
         movementDirection = transform.localScale.x;        

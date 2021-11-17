@@ -46,9 +46,10 @@ public class PlayerMovement :  MonoBehaviour
 
         if (timeToDodge > 0) { timeToDodge -= Time.deltaTime; }
 
+        // Movement direction and grounded check
         movementDirection = Input.GetAxisRaw("Horizontal");
-        isGrounded = playerCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
-        Debug.Log(isGrounded);
+        isGrounded = playerCollider.IsTouchingLayers(LayerMask.GetMask(LayerMask.LayerToName(6)));
+        
         // Animation state check
         playerAnimator.SetBool("isGrounded", isGrounded);
         playerAnimator.SetBool("isRunning", movementDirection!= 0 && isGrounded);

@@ -40,7 +40,7 @@ public class LevelHandler : MonoBehaviour
     }
 
     // Ends game if no lives remain.
-    private void HandleDeath()
+    public void HandleDeath()
     {        
         Destroy(FindObjectOfType<PlayerMovement>().gameObject);
         levelUI.ShowGameOverUI();
