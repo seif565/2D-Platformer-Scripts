@@ -7,9 +7,13 @@ public class Enemy : MonoBehaviour
     // Parameters
     [SerializeField] float enemyMoveSpeed = 5.0f;
     [SerializeField] float waitTime = 2f;    
-    [SerializeField] Transform castPoint;    
+    [SerializeField] Transform castPoint;
+    [SerializeField] float horizontalDeathForce;
+    [SerializeField] float verticalDeathForce;
     float currentMoveSpeed;
     float movementDirection;
+
+    bool isDead = false;
         
     // Cahced References
     [SerializeField] BoxCollider2D bodyCollider, terrainCollider;
@@ -28,19 +32,22 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        //if (FindObjectsOfType<PlayerMovement>().Length != 0)
-        //{
-        //    float distance = Vector2.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position);
-        //    Debug.Log(canSeePlayer(distance));
-            
-        //}
+        /**if (FindObjectsOfType<PlayerMovement>().Length != 0)
+        {
+            float distance = Vector2.Distance(transform.position, FindObjectOfType<PlayerMovement>().transform.position);
+            Debug.Log(canSeePlayer(distance));
+        }
+        **/
+
     }
 
     void FixedUpdate()
-    {        
+    {                
+        if(!isDead)
         enemyRB.velocity = new Vector2(movementDirection * currentMoveSpeed, enemyRB.velocity.y);
     }
     
+    // Function That Detects the player (Being Tested)
     /**bool canSeePlayer(float distance)
     {
         bool isVisible = false;
@@ -70,5 +77,18 @@ public class Enemy : MonoBehaviour
         currentMoveSpeed = enemyMoveSpeed;
         transform.localScale = new Vector3(-transform.localScale.x, 1, 1);
         movementDirection = transform.localScale.x;        
+    }
+
+    // Changes enemy sprite, adds bouncy movement when dead and 
+    public void HandleDeath(float playerHitDirection)
+    {
+        if (isDead) return;
+            enemyAnimator.SetTrigger("Die");
+            enemyRB.velocity = Vector2.zero;
+            enemyRB.AddForce(new Vector2(horizontalDeathForce * playerHitDirection, 
+                verticalDeathForce));
+            Physics2D.IgnoreCollision(bodyCollider, FindObjectOfType<PlayerMovement>().playerCollider);        
+            enemyRB.velocity = Vector2.zero;        
+            isDead = true;
     }
 }
