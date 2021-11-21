@@ -20,14 +20,14 @@ public class PlayerMovement :  MonoBehaviour
     [Header("Serialized Components")]
     [SerializeField] BoxCollider2D swordHitBox;
     
-    public float movementDirection;
+    float movementDirection;
     float timeToAttack;
     float timeToDodge;
     bool isGrounded = true;
 
     // References
     Rigidbody2D playerRB;
-    public CapsuleCollider2D playerCollider;
+    CapsuleCollider2D playerCollider;
     Animator playerAnimator;        
 
     // Start is called before the first frame update
@@ -115,7 +115,7 @@ public class PlayerMovement :  MonoBehaviour
         if (swordHitBox.IsTouching(collision))
         {
             if (collision.gameObject.layer == 7 )
-                collision.GetComponent<Enemy>().HandleDeath(transform.localScale.x);
+                collision.GetComponent<Enemy>().HandleDeath(transform.localScale.x, playerCollider);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

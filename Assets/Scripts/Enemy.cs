@@ -79,15 +79,15 @@ public class Enemy : MonoBehaviour
         movementDirection = transform.localScale.x;        
     }
 
-    // Changes enemy sprite, adds bouncy movement when dead and 
-    public void HandleDeath(float playerHitDirection)
+    // Changes enemy sprite, adds bouncy movement when dead and stops player - enemy collision detection 
+    public void HandleDeath(float playerHitDirection,Collider2D playerCollider)
     {
         if (isDead) return;
             enemyAnimator.SetTrigger("Die");
             enemyRB.velocity = Vector2.zero;
             enemyRB.AddForce(new Vector2(horizontalDeathForce * playerHitDirection, 
                 verticalDeathForce));
-            Physics2D.IgnoreCollision(bodyCollider, FindObjectOfType<PlayerMovement>().playerCollider);        
+            Physics2D.IgnoreCollision(bodyCollider, playerCollider);        
             enemyRB.velocity = Vector2.zero;        
             isDead = true;
     }
