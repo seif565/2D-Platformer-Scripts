@@ -11,8 +11,7 @@ public class UIHandler : MonoBehaviour
     void Start()
     {
         levelHandler = FindObjectOfType<LevelHandler>();
-        gameOverText.gameObject.SetActive(false);
-        livesText.SetText(levelHandler.GetCurrentLives().ToString());
+        gameOverText.gameObject.SetActive(false);        
         scoreText.SetText(levelHandler.GetScore().ToString());
     }
     

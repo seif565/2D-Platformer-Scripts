@@ -1,5 +1,3 @@
-using TMPro;
-using UnityEngine.UI;
 using UnityEngine;
 
 public class LevelHandler : MonoBehaviour
@@ -26,8 +24,9 @@ public class LevelHandler : MonoBehaviour
 
     void Start()
     {
+        currentLives = playerLives;
         levelUI = FindObjectOfType<UIHandler>();
-        currentLives = playerLives;        
+        levelUI.UpdateLives();
     }
 
     // Decreases lives and checks if no  lives are left
@@ -41,7 +40,9 @@ public class LevelHandler : MonoBehaviour
 
     // Ends game if no lives remain.
     public void HandleDeath()
-    {        
+    {
+        currentLives = 0;
+        levelUI.UpdateLives();
         Destroy(FindObjectOfType<PlayerMovement>().gameObject);
         levelUI.ShowGameOverUI();
     }
